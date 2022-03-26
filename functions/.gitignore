@@ -1,5 +1,6 @@
 # Compiled JavaScript files
 lib/**/*.js
+lib/**/*.json
 lib/**/*.js.map
 
 # TypeScript v1 declaration files
@@ -7,3 +8,5 @@ typings/
 
 # Node.js dependency directory
 node_modules/
+
+src/serviceAccount.json
