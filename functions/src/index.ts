@@ -1,5 +1,7 @@
 import * as functions from "firebase-functions";
 import * as admin from 'firebase-admin';
+import * as express from 'express';
+import * as cors from 'cors';
 
 const serviceAccount = require("./serviceAccountKey.json");
 
@@ -34,3 +36,18 @@ export const getGOTY = functions.https.onRequest(async(req, res) => {
 
   res.json(juegos)
 })
+
+// * Generar una app de Express sobre un proyecto Firebase Cloud Functions
+const app = express();
+app.use(cors({origin: true}));
+
+app.get('/goty', async(req, res) => {
+  const gotyRef = db.collection('goty');
+  const docsSnap = await gotyRef.get();
+  const juegos = docsSnap.docs.map(juego => juego.data());
+  res.json(juegos)
+});
+
+// Cualquier petición https adicional, va a ser gestionada por nuestra app de express
+// localhost/api/url_express
+export const api = functions.https.onRequest(app);
